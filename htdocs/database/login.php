@@ -49,16 +49,5 @@ function aes_decrypt_ecb($ciphertext, $key) {
     return openssl_decrypt($data, 'aes-256-ecb', $key, OPENSSL_RAW_DATA);
 }
 
-// Example usage
-$key = 'your-secret-key'; // This can be any string, it will be hashed to 32 bytes
-$plaintext = 'Hello';
-
-// Encrypt the plaintext
-$encrypted = aes_encrypt_ecb($plaintext, $key);
-echo "Encrypted: " . $encrypted . "\n";
-
-// Decrypt the ciphertext
-$decrypted = aes_decrypt_ecb($encrypted, $key);
-echo "Decrypted: " . $decrypted . "\n";
 
 ?>
