@@ -1,5 +1,6 @@
 <?php
 
+// code for encryting
 function aes_encrypt($plaintext, $key) {
     // Generate a random initialization vector (IV)
     $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes-256-cbc'));
@@ -11,6 +12,7 @@ function aes_encrypt($plaintext, $key) {
     return base64_encSode($iv . $ciphertext);
 }
 
+// code for desencryting
 function aes_decrypt($ciphertext, $key) {
     // Decode the base64 encoded data
     $data = base64_decode($ciphertext);
