@@ -1,3 +1,4 @@
+<?php
 function aes_encrypt_ecb($plaintext, $key) {
     // Ensure the key is 32 bytes for AES-256
     $key = substr(hash('sha256', $key, true), 0, 32);
@@ -19,3 +20,4 @@ function aes_decrypt_ecb($ciphertext, $key) {
     // Decrypt the data
     return openssl_decrypt($data, 'aes-256-ecb', $key, OPENSSL_RAW_DATA);
 }
+?>
