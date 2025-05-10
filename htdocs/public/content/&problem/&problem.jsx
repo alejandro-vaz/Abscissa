@@ -7,7 +7,6 @@ let editor = document.getElementById("editor");
 const visor = document.getElementById("visor");
 const instructions = document.getElementById("instructions");
 const info = document.getElementById('info')
-const answer = document.getElementById("answer");
 const result = document.getElementById("result");
 const validateButton = document.getElementById("validate");
 const calculatorLinks = {
@@ -50,14 +49,14 @@ curl("problems", { "PROBLEM": getURLParameter("problem"), "LANG": "en" }).then(d
         // VALIDATE RESULT
         validateButton.addEventListener("click", function() {
             if (problem.numerical) {
-                if (((problem.answer[0] * (1 - problem.answer[1]) <= +answer.value) && (problem.answer[0] * (1 + problem.answer[1]) >= +answer.value) && (problem.answer[0] >= 0)) || ((problem.answer[0] * (1 - problem.answer[1]) >= +answer.value) && (problem.answer[0] * (1 + problem.answer[1]) <= +answer.value) && (problem.answer[0] <= 0))) {
+                if (((problem.answer[0] * (1 - problem.answer[1]) <= +answeris) && (problem.answer[0] * (1 + problem.answer[1]) >= +answeris) && (problem.answer[0] >= 0)) || ((problem.answer[0] * (1 - problem.answer[1]) >= +answeris) && (problem.answer[0] * (1 + problem.answer[1]) <= +answeris) && (problem.answer[0] <= 0))) {
                     alert("OK")
                 } else {
                     alert("X")
                 }
             } else {
                 const index = problem.answer.findIndex(
-                    element => rawLaTeX(element) === rawLaTeX(answer.value)
+                    element => rawLaTeX(element) === rawLaTeX(answeris)
                 );
                 if (index !== -1) {
                     alert("OK");
@@ -74,29 +73,42 @@ curl("problems", { "PROBLEM": getURLParameter("problem"), "LANG": "en" }).then(d
 /* DYNAMIC                                                                   */
 /*                                                                           */
 
-// DYNAMIC -> ANSWER AUTOCOMPLETION
-const brackets = { '[': ']', '(': ')', '{': '}' };
-answer.addEventListener('keydown', function(pressed) {
-    if (brackets[pressed.key]) {
-        pressed.preventDefault();
-        const start = this.selectionStart;
-        const end = this.selectionEnd;
-        const text = this.value;
-        this.value = text.slice(0, start) + pressed.key + brackets[pressed.key] + text.slice(end);
-        this.value = text.slice(0, start) + pressed.key + brackets[pressed.key] + text.slice(end);
-        this.selectionStart = this.selectionEnd = start + 1;
-    }
-});
-
 // DYNAMIC -> RENDER VISOR ON CHANGE
 editor.on("change", function(instance) {
-    visor.textContent = instance.getValue();
+    const content = instance.getValue();
+    visor.textContent = content;
     renderLaTeX(visor);
     visor.scrollTop = visor.scrollHeight;
+    // EXTRACT BOXED CONTENT AND RENDER IT ON RESULT
+    const occurences = (content.match(/\\boxed\{/g) || []).length;
+    if (occurences === 1) {
+        const start = content.indexOf('\\boxed{') + '\\boxed{'.length;
+        let depth = 1;
+        let pos = start;
+        while (pos < content.length && depth > 0) {
+            const ch = content[pos];
+            const prev = content[pos - 1];
+            if ((ch === '{' || ch === '}') && prev !== '\\') {
+                depth += ch === '{' ? 1 : -1;
+            }
+            pos += 1;
+        }
+        if (depth === 0) {
+            const answer = result.dataset.pre + content.slice(start, pos - 1) + result.dataset.post
+            globalThis.answeris = content.slice(start, pos - 1);
+            result.textContent = answer;
+            validateButton.disabled = false
+        } else {
+            const answer = "$$ \\red{Error} $$";
+            globalThis.answeris = null;
+            result.textContent = answer;
+            validateButton.disabled = true
+        }
+    } else {
+        const answer = result.dataset.pre + result.dataset.post;
+        globalThis.answeris = null;
+        result.textContent = answer;
+        validateButton.disabled = true
+    }
+    renderLaTeX(result)
 })
-
-// DYNAMIC -> RENDER ANSWER ON CHANGE
-answer.addEventListener("input", function() {
-    result.textContent = result.dataset.pre + answer.value + result.dataset.post;
-    renderLaTeX(result);
-});

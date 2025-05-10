@@ -68,16 +68,20 @@ $CURVER: ease-in-out !default
     &:focus
         outline: none
     @if $type == button
-        cursor: pointer
+        cursor: url("../../res/link.cur") 0 0, pointer
         background-color: #00000055
         min-width: fit-content
         height: 2.75* $U
         transition: border-color $TIMER $CURVER, background-color $TIMER $CURVER, color $TIMER $CURVER
-        &:hover
+        &:not(:disabled):hover
             background-color: string.unquote($LIGHTABSCISSER + "55")
-        &:active
+        &:not(:disabled):active
             border-color: $LIGHTABSCISSER
             color: $LIGHTABSCISSER
+        &:disabled
+            cursor: url("../../res/unavailable.cur") 0 0, auto
+            border-color: #550000
+            background-color: #55000055
     @if $type == textarea
         background-color: #000000
         resize: none
