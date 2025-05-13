@@ -4,7 +4,7 @@
     "solution": "Solution", // BETWEEN DOUBLE DOLLAR SIGNS
     "proof": "Proof", // BETWEEN DOUBLE DOLLAR SIGNS
     "playgroundDefault": "INITIAL EQUATION MAYBE",
-    "calculator": true, // false OR "basic", "scientific", "graphing", "financial", "advanced"
+    "calculator": false, // false OR "basic", "scientific", "graphing", "financial", "advanced"
     "pre": "$$v = ", // KEY BEFORE INPUT
     "post": " m/s$$", // KEY AFTER INPUT
     "numerical": false, // WHETHER OR NOT ANSWER IS NUMERICAL
@@ -15,7 +15,8 @@
     "incorrect": [
         "no",
         "No"
-    ]
+    ],
+    "tags": [] // ADD ANY DESIRED TAGS HERE
 }
 
 /*
