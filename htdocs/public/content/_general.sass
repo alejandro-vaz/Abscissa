@@ -30,87 +30,22 @@ $CURVER: root.$CURVER
 
 // FUNCTIONS -> CONTAINER
 =section($align-horizontally, $align-vertically, $width: 100%, $height: 100%, $direction: column, $display: flex, $grow: true)
-    box-sizing: border-box
-    @if $grow
-        flex: 1 0 auto
-    @else
-        flex: 0 0 auto
-    display: $display
-    height: $height
-    width: $width
-    @if $display == flex
-        flex-direction: $direction
-        @if $align-horizontally
-            align-items: center
-        @else
-            align-items: stretch
-        @if $align-vertically
-            justify-content: center
-        @else
-            justify-content: flex-start
+    +root.section($align-horizontally, $align-vertically, $width: $width, $height: $height, $direction: $direction, $display: $display, $grow: $grow)
 
 
 // FUNCTIONS -> ELEMENT
 =element($inline)
-    box-sizing: border-box
-    margin: math.div($PADDER, 2)
-    padding: math.div($PADDER, 2)
-    border-radius: $RADIUSER
-    @if $inline
-        display: inline-block
-    @else
-        display: block
+    +root.element($inline)
 
 
 // FUNCTIONS -> INPUT
 =input($type, $inline: true)
-    padding: math.div($PADDER, 2) $PADDER
-    border-radius: $RADIUSER
-    box-sizing: border-box
-    border: 0.1* $U solid $COLORER
-    @if $inline
-        display: inline-block
-    @else
-        display: block
-    &:focus
-        outline: none
-    @if $type == button
-        cursor: url("../../res/link.cur") 0 0, pointer
-        background-color: #00000055
-        min-width: fit-content
-        height: 2.75* $U
-        transition: border-color $TIMER $CURVER, background-color $TIMER $CURVER, color $TIMER $CURVER
-        &:not(:disabled):hover
-            background-color: string.unquote($LIGHTABSCISSER + "55")
-        &:not(:disabled):active
-            border-color: $LIGHTABSCISSER
-            color: $LIGHTABSCISSER
-        &:disabled
-            cursor: url("../../res/unavailable.cur") 0 0, auto
-            border-color: #550000
-            background-color: #55000055
-    @if $type == textarea
-        background-color: #000000
-        resize: none
-        &::placeholder
-            color: $COLORER
-            opacity: 0.5
-    @if $type == text or $type == password or $type == email
-        background-color: #000000
-        font-family: monospace
-        height: 2.75* $U
-        &::placeholder
-            color: $COLORER
-            opacity: 0.5
+    +root.input($type, $inline: $inline)
 
 
 // FUNCTIONS -> SCROLLBAR
 =scrollbar() 
-    overflow: 
-        x: scroll
-        y: scroll
-    scrollbar:
-        width: none
+    +root.scrollbar()
 
 
 

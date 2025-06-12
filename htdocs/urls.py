@@ -24,17 +24,8 @@ urlpatterns = []
 
 # URL PATTERNS -> DECLARATIONS
 views = [
-    "auth",
-    "dashboard",
-    "playground",
-    "problem"
 ]
 scripts = [
-    "auth",
-    "location",
-    "problems",
-    "resources",
-    "users"
 ]
 
 # URL PATTERNS -> ADD PATTERNS
